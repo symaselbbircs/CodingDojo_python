@@ -23,5 +23,6 @@ def getgrades(count):
             except ValueError:
                 print "Oops! That's not a number! Please try again"
         print "Your grade is {}".format(scores(grade))
+    print "End of Program. Bye!"
 
 getgrades(10)
