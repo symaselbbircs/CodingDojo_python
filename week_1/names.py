@@ -35,3 +35,5 @@ def name_details():
 names()
 print ""
 name_details()
+
+#Sweet code, Amy.  Looks great.  I appreciate you doing both parts in one file!
