@@ -24,6 +24,7 @@ def run_bubblesort():
                 rand_list[i+1] = tmp
 
 _init_list(100,1000)
+list_copy = rand_list
 print "Initial list is as follows: "
 print rand_list
 print "Running sorter now \n\n\n"
@@ -32,3 +33,9 @@ run_bubblesort()
 tfinish = datetime.now()
 print rand_list
 print "Time to run algorithm:", (tfinish-tstart).microseconds/float(1000), "ms"
+
+tstart_copy = datetime.now()
+list_copy.sort()
+tfinish_copy = datetime.now()
+
+print "Time to run sorting algorithm:", (tfinish_copy-tstart_copy).microseconds/float(1000), "ms"
