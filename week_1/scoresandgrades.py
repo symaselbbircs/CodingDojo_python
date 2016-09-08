@@ -26,3 +26,5 @@ def getgrades(count):
     print "End of Program. Bye!"
 
 getgrades(10)
+
+#This is really really slick and clean.  Your if, elif, else is brilliant and not overly verbose while also covering all cases.
