@@ -52,7 +52,7 @@ class fastWay():
             print "b list: \t\t\t{}".format(blist)
             # print "sending {} to be sorted as b leg".format(blist)
             min_swap, max_swap = self.get_positions(blist)
-            if max_swap == 0:
+            if max_swap == 0: # needed for cases when max value is actually next in line to become the lowest.
                 max_swap = min_swap
             print "Swapping min sort_list[{}] and sort_list[{}]".format(i,min_swap+i)
             print "Swapping max sort_list[{}] and sort_list[{}]".format(len(sort_list)-i-1,max_swap+i)
