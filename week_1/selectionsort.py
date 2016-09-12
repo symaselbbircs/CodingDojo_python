@@ -52,6 +52,8 @@ class fastWay():
             print "b list: \t\t\t{}".format(blist)
             # print "sending {} to be sorted as b leg".format(blist)
             min_swap, max_swap = self.get_positions(blist)
+            if max_swap == 0:
+                max_swap = min_swap
             print "Swapping min sort_list[{}] and sort_list[{}]".format(i,min_swap+i)
             print "Swapping max sort_list[{}] and sort_list[{}]".format(len(sort_list)-i-1,max_swap+i)
             # print "found position {} in blist to be the lowest value".format(pos_to_swap)
