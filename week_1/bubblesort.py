@@ -7,7 +7,6 @@ rand_list = []
 def _init_list(size,magnitude):
     for i in range(0,size):
         rand_list.append(round(random()*magnitude))
-    return rand_list
 
 def swap_check(a,b):
     if a >= b:
