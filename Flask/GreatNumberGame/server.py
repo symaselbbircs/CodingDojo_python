@@ -30,9 +30,6 @@ def index():
 def guess():
     if request.form['guess'] == '':
         return redirect('/')
-    print "*" * 50
-    print request.form['guess']
-    print "*" * 50
     check_guess(int(request.form['guess']))
     return redirect('/')
 
