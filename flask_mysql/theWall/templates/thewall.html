@@ -20,25 +20,31 @@
         <input id="button_message" type="submit" value="Post A Message">
       </form>
       <div id="message_board">
-        <div>
-          <h4>USER1 - December 1, 2014</h4><br>
-          <div class="message">
-            <p>Create a wall/forum page where users will be able to post a message and see the message displayed by other users. Stores the messages in a table called 'messages' and retrieve the messages from the database.</p>
-          </div>
-          <div class="comment">
-            <h4>USER2 - December 2, 2014</h4><br>
-            <div class="comment_content">
-              <p>This is a comment This is a comment This is a comment This is a comment This is a comment This is a comment This is a comment This is a comment This is a comment This is a comment This is a comment This is a comment This is a comment This is a comment </p>
+        {% if data: %}
+          {% for message in data %}
+            <div>
+              <h4>{{ data[message]["name"] }} - {{ data[message]["date"] }}</h4><br>
+              <div class="message">
+                <p>{{ data[message]["message"] }}</p>
+              </div>
+              {% for comment in data[message]["comments"] %}
+                <div class="comment">
+                <h4>{{ comment["name"]}} - {{ comment["date"] }}</h4><br>
+                <div class="comment_content">
+                  <p>{{ comment["comment"] }}</p>
+                </div>
+              </div>
+              {% endfor %}
+              <div class="comment">
+                <h4>Post a comment</h4>
+                <textarea class="comment_box" name="comment" type="textarea" form="{{message}}"></textarea>
+                <form id="{{message}}" class="submitcomment" action="/comment/{{ message }}" method="POST">
+                <input class="button_comment" type="submit" value="Post A Comment">
+                </form>
+              </div>
             </div>
-          </div>
-          <div class="comment">
-            <h4>Post a comment</h4>
-            <textarea id="comment_box" type="textarea" form="submitcomment"></textarea>
-            <form id="submitcomment" action="/comment/ID" method="POST">
-            <input id="button_comment" type="submit" value="Post A Comment">
-            </form>
-          </div>
-        </div>
+          {% endfor %}
+        {% endif %}
       </div>
     </div>
   </body>

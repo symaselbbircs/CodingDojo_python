@@ -75,23 +75,26 @@ def get_user_info(un):
     return mysql.query_db(query,data)
 
 def load_messages():
-    query="""SELECT id, message, user_id, concat(MONTHNAME(updated_at), " ", DAY(updated_at), ", ", YEAR(updated_at)) AS date
-             FROM messages"""
+    query="""SELECT m.id, m.user_id, CONCAT(u.first_name, ' ', u.last_name) as name, m.message, CONCAT(MONTHNAME(m.updated_at), " ", DAY(m.updated_at), ", ", YEAR(m.updated_at)) AS date from messages m
+             LEFT JOIN users u
+             ON u.id = m.user_id
+             ORDER BY date ASC"""
     result = mysql.query_db(query)
-    print result
     for row in result:
         wall_data[row['id']] = {"uid":row['user_id'],
-                                "date":row['date'],
-                                "content":row['message'],
+                                "date":str(row['date']),
+                                "name":row['name'],
+                                "message":row['message'],
                                 "comments":[]}
 
 def load_comments():
-    query="""SELECT message_id, user_id, comment, concat(MONTHNAME(updated_at), " ", DAY(updated_at), ", ", YEAR(updated_at)) AS date
-             FROM comments"""
+    query="""SELECT c.message_id, CONCAT(u.first_name, ' ', u.last_name) as name, c.comment, u.id as user_id, concat(MONTHNAME(c.updated_at), " ", DAY(c.updated_at), ", ", YEAR(c.updated_at)) AS date  from comments c
+             left join users u
+             on u.id = c.user_id
+             ORDER BY date ASC"""
     result = mysql.query_db(query)
-    print result
     for row in result:
-        wall_data[row['message_id']]["comments"].append({"uid":row["user_id"],"date":row["date"],"content":row["comment"]})
+        wall_data[row['message_id']]["comments"].append({"uid":row["user_id"],"name":row["name"],"date":str(row["date"]),"comment":row["comment"]})
 
 def refresh_wall_data():
     wall_data = {}
@@ -104,6 +107,7 @@ def refresh_wall_data():
 def index():
     if "name" in session:
         refresh_wall_data()
+        print wall_data
         print "wall data {}".format(wall_data)
         return render_template('thewall.html',data=wall_data)
     return render_template('login.html')
@@ -120,7 +124,7 @@ def login():
             session['username'] = results[0]['username']
             session['password'] = request.form['password']
             session['name'] = results[0]['first_name'] + " " + results[0]['last_name']
-            return render_template('thewall.html')
+            # return render_template('thewall.html')
     else:
         flash({"alert":"Username {} not found! Please click 'Add New User'.".format(request.form['username'])})
     return redirect('/')
@@ -159,11 +163,16 @@ def add_message():
     data = {"id":session['id'],
             "message":request.form['message']}
     mysql.query_db(query,data)
-    return render_template('thewall.html')
+    return redirect('/')
 
-@app.route('/comment', methods=["POST"])
-def add_comment():
-    # This needs the message id as well
-    pass
+@app.route('/comment/<mid>', methods=["POST"])
+def add_comment(mid):
+    query = """ INSERT INTO comments (user_id,comment,created_at,updated_at,message_id)
+                VALUES (:uid,:comment,NOW(),NOW(),:mid)"""
+    data = {"uid": session['id'],
+            "comment": request.form["comment"],
+            "mid":mid}
+    mysql.query_db(query,data)
+    return redirect('/')
 
 app.run(debug=True)

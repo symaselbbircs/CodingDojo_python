@@ -43,7 +43,7 @@
   margin-top: 10px;
 }
 
-#comment_box{
+.comment_box{
   padding: 2px;
   padding-top: 5px;
   height: 100px;
@@ -58,7 +58,7 @@
   background-color: blue;
   color: white;
 }
-#button_comment{
+.button_comment{
   margin-left: 865px;
   padding: 2px;
   background-color: green;
